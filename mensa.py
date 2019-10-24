@@ -5,11 +5,11 @@ import json
 import os
 
 API = 'https://app.mensaplan.de/api/11102/de.mensaplan.app.android.regensburg/reg7.json'
+TERM_WIDTH = 80 if int(os.popen('stty size', 'r').read().split()[1]) > 80 else \
+                    int(os.popen('stty size', 'r').read().split()[1])
 
-def print_div(count):
-    if count > 80:
-        count = 80
-    for _ in range(count):
+def print_div():
+    for _ in range(TERM_WIDTH):
         print('-', end='')
     print()
 
@@ -27,20 +27,15 @@ def print_category(category):
     if category != menu['categories'][-1]:
         print()
 
-
 request = requests.get(API)
 
 menu = json.loads(request.content)
 week_menu = menu['days']
 del week_menu[0]
 
-# get terminal size
-rows, columns = os.popen('stty size', 'r').read().split()
-columns = int(columns)
-
-print_div(columns)
+print_div()
 for menu in week_menu:
     print_date(menu['date'])
     for category in menu['categories']:
         print_category(category)
-    print_div(columns)
+    print_div()
