@@ -8,33 +8,23 @@ API = 'https://app.mensaplan.de/api/11102/de.mensaplan.app.android.regensburg/re
 TERM_WIDTH = 80 if int(os.popen('stty size', 'r').read().split()[1]) > 80 else \
                     int(os.popen('stty size', 'r').read().split()[1])
 
-def print_div():
-    print(TERM_WIDTH * '-')
-
-def print_date(date):
-    print(date, '|\n', (len(date) + 1) *'-')
-
-def print_category(category):
-    print(category['name'])
-    for meal in category['meals']:
-        meal_formated = meal['name'].replace('\xad', '')
-        print(meal_formated, end='')
-        # align price to the end of line (price is always 5 characters)
-        for _ in range(TERM_WIDTH - len(meal_formated) - 5):
-            print(' ', end='')
-        print(format(meal['pricing']['for'][0] / 100, '.2f'), end='€\n')
-    if category != menu['categories'][-1]:
-        print()
-
 request = requests.get(API)
 
-menu = json.loads(request.content)
-week_menu = menu['days']
-del week_menu[0]
+menus = json.loads(request.content)['days']
+del menus[0]
 
-print_div()
-for menu in week_menu:
-    print_date(menu['date'])
+print(TERM_WIDTH * '-')
+for menu in menus:
+    print(menu['date'], '|\n', (len(menu['date']) + 1) * '-')
     for category in menu['categories']:
-        print_category(category)
-    print_div()
+        print(category['name'])
+        for meal in category['meals']:
+            meal_formated = meal['name'].replace('\xad', '')
+            print(meal_formated, end='')
+            # align price to the end of line (price is always 5 characters)
+            for _ in range(TERM_WIDTH - len(meal_formated) - 5):
+                print(' ', end='')
+            print(format(meal['pricing']['for'][0] / 100, '.2f'), end='€\n')
+        if category != menu['categories'][-1]:
+            print()
+    print(TERM_WIDTH * '-')
