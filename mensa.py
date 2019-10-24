@@ -15,9 +15,9 @@ del menus[0]
 
 print(TERM_WIDTH * '-')
 for menu in menus:
-    print(menu['date'], '|\n', (len(menu['date']) + 1) * '-')
+    print(menu['date'] + ' |\n' + (len(menu['date']) + 2) * '-')
     for category in menu['categories']:
-        print(category['name'])
+        print(5 * '*', category['name'], 5 * '*')
         for meal in category['meals']:
             meal_formated = meal['name'].replace('\xad', '')
             print(meal_formated, end='')
