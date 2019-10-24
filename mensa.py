@@ -22,7 +22,11 @@ def print_date(date):
 def print_category(category):
     print(category['name'])
     for meal in category['meals']:
-        print(meal['name'].replace('\xad', ''), end=' ')
+        meal_formated = meal['name'].replace('\xad', '')
+        print(meal_formated, end='')
+        # align price to the end of line (price is always 5 characters)
+        for _ in range(TERM_WIDTH - len(meal_formated) - 5):
+            print(' ', end='')
         print(format(meal['pricing']['for'][0] / 100, '.2f'), end='€\n')
     if category != menu['categories'][-1]:
         print()
