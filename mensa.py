@@ -9,15 +9,10 @@ TERM_WIDTH = 80 if int(os.popen('stty size', 'r').read().split()[1]) > 80 else \
                     int(os.popen('stty size', 'r').read().split()[1])
 
 def print_div():
-    for _ in range(TERM_WIDTH):
-        print('-', end='')
-    print()
+    print(TERM_WIDTH * '-')
 
 def print_date(date):
-    print(date, '|')
-    for _ in range(len(date) + 1):
-        print('-', end='')
-    print()
+    print(date, '|\n', (len(date) + 1) *'-')
 
 def print_category(category):
     print(category['name'])
