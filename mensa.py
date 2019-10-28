@@ -21,13 +21,19 @@
 import requests
 import json
 import os
+import sys
 import datetime
 
 API = 'https://app.mensaplan.de/api/11102/de.mensaplan.app.android.regensburg/reg7.json'
 TERM_WIDTH = 80 if int(os.popen('stty size', 'r').read().split()[1]) > 80 else \
                     int(os.popen('stty size', 'r').read().split()[1])
 
-request = requests.get(API)
+try:
+    request = requests.get(API)
+except (requests.exceptions.ConnectionError,
+        requests.exceptions.HTTPError) as e:
+    print(e)
+    sys.exit(-1)
 
 menus = json.loads(request.content)['days']
 dt_string = datetime.datetime.now().strftime('%d.%m.%Y')
