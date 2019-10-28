@@ -22,6 +22,9 @@ print(TERM_WIDTH * '-')
 for menu in menus:
     print(menu['date'] + ' |\n' + (len(menu['date']) + 2) * '-')
     for category in menu['categories']:
+        if 'name' not in category:
+            print('no meals today... maybe holiday?')
+            continue
         print(5 * '*', category['name'], 5 * '*')
         for meal in category['meals']:
             meal_formated = meal['name'].replace('\xad', '')
