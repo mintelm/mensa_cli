@@ -3,6 +3,7 @@
 import requests
 import json
 import os
+import datetime
 
 API = 'https://app.mensaplan.de/api/11102/de.mensaplan.app.android.regensburg/reg7.json'
 TERM_WIDTH = 80 if int(os.popen('stty size', 'r').read().split()[1]) > 80 else \
@@ -11,7 +12,11 @@ TERM_WIDTH = 80 if int(os.popen('stty size', 'r').read().split()[1]) > 80 else \
 request = requests.get(API)
 
 menus = json.loads(request.content)['days']
-del menus[0]
+dt_string = datetime.datetime.now().strftime('%d.%m.%Y')
+
+# check if first menu has todays date
+if (dt_string != menus[0]['date'][5:]):
+    del menus[0]
 
 print(TERM_WIDTH * '-')
 for menu in menus:
