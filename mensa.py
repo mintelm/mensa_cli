@@ -56,7 +56,10 @@ for menu in menus:
             # align price to the end of line (price is always 5 characters)
             for _ in range(TERM_WIDTH - len(meal_formated) - 5):
                 print(' ', end='')
-            print(format(meal['pricing']['for'][0] / 100, '.2f'), end='€\n')
+            if 'pricing' in meal:
+                print(format(meal['pricing']['for'][0] / 100, '.2f'), end='€\n')
+            else:
+                print()
         if category != menu['categories'][-1]:
             print()
     print(TERM_WIDTH * '-')
